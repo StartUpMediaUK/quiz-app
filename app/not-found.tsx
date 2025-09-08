@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { siteConfig } from "./siteConfig"
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { siteConfig } from "./siteConfig";
 
 
 export default function NotFound() {
@@ -13,5 +13,5 @@ export default function NotFound() {
         <Link href={siteConfig.baseLinks.home}>Go to the home page</Link>
       </Button>
     </div>
-  )
+  );
 }

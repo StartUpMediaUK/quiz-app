@@ -4,11 +4,11 @@ import { siteConfig } from "@/app/siteConfig"
 import { Button } from "@/components/ui/button"
 import useScroll from "@/lib/useScroll"
 import { cn } from "@/lib/utils"
-import { Logo } from "@/public/Logo";
-import { RiCloseFill, RiMenuFill } from "@remixicon/react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React from "react";
+import { Logo } from "@/public/Logo"
+import { RiCloseFill, RiMenuFill } from "@remixicon/react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import React from "react"
 
 export function Navbar() {
   const [open, setOpen] = React.useState(false);
@@ -34,19 +34,16 @@ export function Navbar() {
           </Link>
           <nav className="hidden sm:block md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:transform">
             <div className="flex items-center gap-10 font-medium">
-              <Link className="px-2 py-1 text-gray-900" href="#solutions">
-                Solutions
+              <Link className="px-2 py-1 text-gray-900" href="#discover">
+                Discover
               </Link>
-              <Link className="px-2 py-1 text-gray-900" href="#farm-management">
-                Farm Management
-              </Link>
-              <Link className="px-2 py-1 text-gray-900" href="#solar-analytics">
-                Analytics
+              <Link className="px-2 py-1 text-gray-900" href="#about">
+                About
               </Link>
             </div>
           </nav>
-          <Button variant="secondary" className="hidden h-10 font-semibold sm:block">
-            Get a quote
+          <Button variant="outline" className="hidden h-10 font-semibold sm:block" asChild>
+            <Link href="https://nerissagolden.com">Go to site</Link>
           </Button>
           <Button
             onClick={() => setOpen(!open)}
@@ -63,17 +60,14 @@ export function Navbar() {
         <nav className={cn("mt-6 flex flex-col gap-6 text-lg ease-in-out will-change-transform sm:hidden", open ? "" : "hidden")}>
           <ul className="space-y-4 font-medium">
             <li onClick={() => setOpen(false)}>
-              <Link href="#solutions">Solutions</Link>
+              <Link href="#discover">Discover</Link>
             </li>
             <li onClick={() => setOpen(false)}>
-              <Link href="#farm-management">Farm Management</Link>
-            </li>
-            <li onClick={() => setOpen(false)}>
-              <Link href="#solar-analytics">Analytics</Link>
+              <Link href="#about">About</Link>
             </li>
           </ul>
-          <Button variant="secondary" className="text-lg">
-            Get a quote
+          <Button variant="secondary" className="text-lg" asChild>
+            <Link href="https://nerissagolden.com">Go to site</Link>
           </Button>
         </nav>
       </div>
