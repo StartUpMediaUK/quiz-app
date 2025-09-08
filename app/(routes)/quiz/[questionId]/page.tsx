@@ -48,8 +48,8 @@ export default function QuestionPage() {
   }
 
   return (
-    <Page paddingTop={false}>
-      <div className="p-6 space-y-6 min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50">
+    <Page paddingTop={false} gradientBackground>
+      <div className="p-6 space-y-6">
         {/* Progress Bar */}
         <div className="max-w-2xl mx-auto mb-8">
           <div className="flex items-center justify-between mb-2">
@@ -69,31 +69,22 @@ export default function QuestionPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <RadioGroup
-                  className="gap-4 -space-y-px rounded-md shadow-xs"
-                  value={selected ?? ""}
-                  onValueChange={(val) => setSelected(val)}
-                >
-                  {question.options
-                    .map((opt) => (
+                <RadioGroup className="gap-4 -space-y-px rounded-md shadow-xs" value={selected ?? ""} onValueChange={(val) => setSelected(val)}>
+                  {question.options.map((opt) => (
                     <div
                       key={opt.id}
-                      className="border-red-200 hover:border-red-800 has-data-[state=checked]:border-red-800/50 has-data-[state=checked]:bg-accent relative flex flex-col gap-4 border outline-none rounded-md has-data-[state=checked]:z-10"
-                    >
-                        <div className="flex w-full items-center gap-2 px-4">
-                          <RadioGroupItem
-                            id={opt.id}
-                            value={opt.id}
-                            className="border border-red-200 hover:border-red-800 hover:bg-red-50 data-[state=checked]:bg-red-500 data-[state=checked]:text-primary-foreground data-[state=checked]:border-red-500 transition-all"
-                            aria-describedby={opt.id}
-                          />
-                          <Label
-                            className="inline-flex items-start w-full p-4"
-                            htmlFor={opt.id}
-                          >
-                            {opt.text}
-                          </Label>
-                        </div>
+                      className="border-red-200 hover:border-red-800 has-data-[state=checked]:border-red-800/50 has-data-[state=checked]:bg-accent relative flex flex-col gap-4 border outline-none rounded-md has-data-[state=checked]:z-10">
+                      <div className="flex w-full items-center gap-2 px-4">
+                        <RadioGroupItem
+                          id={opt.id}
+                          value={opt.id}
+                          className="border border-red-200 hover:border-red-800 hover:bg-red-50 data-[state=checked]:bg-red-500 data-[state=checked]:text-primary-foreground data-[state=checked]:border-red-500 transition-all"
+                          aria-describedby={opt.id}
+                        />
+                        <Label className="inline-flex items-start w-full p-4" htmlFor={opt.id}>
+                          {opt.text}
+                        </Label>
+                      </div>
                     </div>
                   ))}
                 </RadioGroup>
@@ -106,17 +97,12 @@ export default function QuestionPage() {
             <Button
               variant="outline"
               className="border-red-300 text-maroon hover:bg-red-50 bg-transparent"
-              onClick={() => router.push(`/quiz/${prev.id}`)}
-            >
+              onClick={() => router.push(`/quiz/${prev.id}`)}>
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back
             </Button>
           ) : (
-            <Button
-              variant="outline"
-              className="border-red-300 text-maroon hover:bg-red-50 bg-transparent"
-              onClick={() => router.push(`/quiz`)}
-            >
+            <Button variant="outline" className="border-red-300 text-maroon hover:bg-red-50 bg-transparent" onClick={() => router.push(`/quiz`)}>
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Start
             </Button>
@@ -127,5 +113,5 @@ export default function QuestionPage() {
         </div>
       </div>
     </Page>
-  )
+  );
 }
