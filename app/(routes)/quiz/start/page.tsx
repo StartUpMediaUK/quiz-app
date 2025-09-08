@@ -10,15 +10,11 @@ export default function StartQuiz() {
   const { reset, quiz } = useQuiz()
 
   return (
-    <Page>
-      <div className="p-6 text-center space-x-2">
+    <Page gradientBackground>
+      <div className="p-6 text-center space-x-2 ">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-serif font-bold text-maroon mb-6 text-balance">
-            {quiz.title}
-          </h1>
-          <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-8 leading-relaxed">
-            {quiz.description}
-          </p>
+          <h1 className="text-4xl md:text-5xl font-serif font-bold text-maroon mb-6 text-balance">{quiz.title}</h1>
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-8 leading-relaxed">{quiz.description}</p>
 
           <div className="flex flex-wrap justify-center gap-6 mb-8">
             <div className="flex items-center gap-2 text-gray-600">
@@ -32,22 +28,17 @@ export default function StartQuiz() {
           </div>
         </div>
         <Button variant="outline" asChild>
-          <Link
-            href={`/`}
-          >
-            Back Home
-          </Link>
+          <Link href={`/`}>Back Home</Link>
         </Button>
         <Button variant="default" asChild>
           <Link
             href={`/quiz/${quiz?.questions[0]?.id}`}
             onClick={() => reset()}
-            className="mt-6 inline-block rounded bg-maroon-800 px-6 py-3 text-white"
-          >
+            className="mt-6 inline-block rounded bg-maroon-800 px-6 py-3 text-white">
             Start Quiz
           </Link>
         </Button>
       </div>
     </Page>
-  )
+  );
 }

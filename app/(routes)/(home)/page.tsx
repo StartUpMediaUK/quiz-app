@@ -14,13 +14,12 @@ const HomePage = () => {
         {/* Background gradient */}
 
         <div className="relative container mx-auto px-4 py-20 lg:py-32">
-          <div className="grid gap-16 lg:grid-cols-2 items-center">
-            {/* Book Cover with integrated background */}
+          <div className="grid gap-16 grid-cols-1 lg:grid-cols-2 items-center">
             <div className="flex justify-center lg:justify-start relative">
               <div className="relative z-10">
                 <Image
-                  width={FearlessBook.width}
-                  height={FearlessBook.height}
+                  width={400}
+                  height={400}
                   src={FearlessBook.src}
                   alt="The Reader&apos;s Journey Book Cover"
                   className="w-80 h-[480px] object-cover rounded-2xl shadow-2xl transform rotate-1 hover:rotate-0 transition-transform duration-500"
@@ -55,12 +54,8 @@ const HomePage = () => {
               </div>
 
               <div className="pt-4">
-                <Button
-                  asChild
-                  size="lg"
-                  className="text-lg px-10 py-6 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl"
-                >
-                  <Link href="/quiz/start">Enhance Your Reading Experience — Discover Your Profile</Link>
+                <Button asChild size="lg" className="text-lg px-10 py-6 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl">
+                  <Link href="/quiz/start">Enhance Your Reading Experience</Link>
                 </Button>
               </div>
             </div>

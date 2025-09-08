@@ -24,20 +24,21 @@ function Page({
   className,
   children,
   paddingTop = true,
+  gradientBackground,
   ...props
-}: React.HTMLAttributes<HTMLDivElement> & { paddingTop?: boolean}) {
+}: React.HTMLAttributes<HTMLDivElement> & { paddingTop?: boolean; gradientBackground?: boolean }) {
   return (
     <main
       className={cn(
         "relative mx-auto flex flex-col space-y-6",
         paddingTop && "pt-24",
+        gradientBackground && "min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50",
         className
       )}
-      {...props}
-    >
+      {...props}>
       {children}
     </main>
-  )
+  );
 }
 
 function PageHeader({
