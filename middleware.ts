@@ -4,7 +4,7 @@ import { NextResponse } from "next/server"
 
 const adminRoutes = ["/dashboard", "/dashboard/quizzes", "/dashboard/settings"]
 const adminPublicRoutes = ["/sign-in"]
-const publicRoutes = ["/", "/quiz"]
+// const publicRoutes = ["/", "/quiz"]
 const authApiRoutePrefix = "/api/auth/"
 
 function isAuthApiRoute(pathname: string): boolean {

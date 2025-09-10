@@ -20,9 +20,9 @@ export const quizRouter = createTRPCRouter({
       if (!session || !session.user) {
         throw new Error("Unauthorized: user not found");
       }
-      const userId = session.user.id;
+      // const userId = session.user.id;
 
-      const quiz  = await ctx.db.quiz.findFirst({
+      const quiz = await ctx.db.quiz.findFirst({
         where: { objectGuid: input.quizId, isDeleted: false },
         include: quizInclude,
       });
@@ -46,12 +46,12 @@ export const quizRouter = createTRPCRouter({
   getAll: publicProcedure
     .input(z.object({
     }))
-    .query(async ({ input, ctx }): Promise<Quiz[]> => {
+    .query(async ({ ctx }): Promise<Quiz[]> => {
       const session = await auth.api.getSession(ctx);
       if (!session || !session.user) {
         throw new Error("Unauthorized: user not found");
       }
-      const userId = session.user.id;
+      // const userId = session.user.id;
 
       const quizzes = await ctx.db.quiz.findMany({
         where: {

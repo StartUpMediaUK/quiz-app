@@ -6,20 +6,20 @@ import { prismadb } from "@/server/db";
 
 const auth = betterAuth({
   user: {
-      modelName: "User",
+    modelName: "User",
   },
   session: {
-      modelName:"Session",
+    modelName: "Session",
   },
   account: {
-      modelName: "Account",
+    modelName: "Account",
   },
   verification: {
-      modelName: "Verification",
+    modelName: "Verification",
   },
   emailAndPassword: {
     enabled: true,
-    async sendResetPassword(data, request) {
+    async sendResetPassword(_data, _request) {
       // Send an email to the user with a link to reset their password
     },
   },
@@ -29,12 +29,9 @@ const auth = betterAuth({
   advanced: {
     database: {
       generateId: false,
-    }
+    },
   },
-  plugins: [
-    openAPI(),
-    multiSession(),
-  ],
+  plugins: [openAPI(), multiSession()],
 });
 
 export default auth;
