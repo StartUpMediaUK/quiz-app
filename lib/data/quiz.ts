@@ -238,9 +238,9 @@ const quiz: Quiz = {
 }
 
 const resultRanges = [
-  { min: 0, max: 7, label: "Explorer", url: "/quiz/start" },
-  { min: 8, max: 12, label: "Builder", url: "/quiz/start" },
-  { min: 13, max: 16, label: "Trailblazer", url: "/quiz/start" },
+  { min: 0, max: 7, label: "Explorer", url: "/quiz/live-fearless-quiz/start" },
+  { min: 8, max: 12, label: "Builder", url: "/quiz/live-fearless-quiz/start" },
+  { min: 13, max: 16, label: "Trailblazer", url: "/quiz/live-fearless-quiz/start" },
 ];
 
 export { categories, quiz, resultRanges };

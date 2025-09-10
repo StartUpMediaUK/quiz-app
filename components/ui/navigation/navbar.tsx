@@ -1,14 +1,14 @@
 "use client"
 
-import { siteConfig } from "@/app/siteConfig"
-import { Button } from "@/components/ui/button"
-import useScroll from "@/lib/useScroll"
-import { cn } from "@/lib/utils"
-import { Logo } from "@/public/Logo"
-import { RiCloseFill, RiMenuFill } from "@remixicon/react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import React from "react"
+import { Button } from "@/components/ui/button";
+import { siteConfig } from "@/lib/config/site";
+import useScroll from "@/lib/useScroll";
+import { cn } from "@/lib/utils";
+import { Logo } from "@/public/Logo";
+import { RiCloseFill, RiMenuFill } from "@remixicon/react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React from "react";
 
 export function Navbar() {
   const [open, setOpen] = React.useState(false);

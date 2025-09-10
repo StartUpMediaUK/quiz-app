@@ -1,8 +1,9 @@
-import { Navbar } from "@/components/ui/navigation/navbar";
+import { AppContainer } from "@/components/ui/layout/container";
+import { TRPCReactProvider } from "@/trpc/react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { siteConfig } from "../lib/config/site";
 import "./globals.css";
-import { siteConfig } from "./siteConfig";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.ico",
   },
-}
+};
 
 export default function RootLayout({
   children,
@@ -39,10 +40,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen overflow-x-hidden scroll-auto bg-gray-50 selection:bg-orange-100 selection:text-orange-600`}
-      >
-        <Navbar />
-        {children}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen overflow-x-hidden scroll-auto bg-gray-50 selection:bg-orange-100 selection:text-orange-600`}>
+        <AppContainer>
+          <TRPCReactProvider>{children}</TRPCReactProvider>
+        </AppContainer>
       </body>
     </html>
   );

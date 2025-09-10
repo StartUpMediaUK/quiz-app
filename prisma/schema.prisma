@@ -1,0 +1,232 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  email         String
+  emailVerified Boolean
+  image         String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  isDeleted Boolean   @default(false)
+  deletedBy String?
+  deletedAt DateTime?
+
+  quizActivities QuizHistory[] @relation("UserQuizActivities")
+
+  sessions Session[]
+  accounts Account[]
+
+  @@unique([email])
+  @@index([name])
+  @@map("User")
+}
+
+model Session {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  token     String
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+
+  userId String @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  activities Activity[]
+  errors     ErrorLog[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("Session")
+}
+
+model Account {
+  id                    String    @id @default(auto()) @map("_id") @db.ObjectId
+  accountId             String
+  providerId            String
+  accessToken           String?
+  accessTokenExpiresAt  DateTime?
+  refreshToken          String?
+  refreshTokenExpiresAt DateTime?
+
+  scope    String?
+  idToken  String?
+  password String?
+
+  userId String? @db.ObjectId
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  isDeleted Boolean   @default(false)
+  deletedBy String?
+  deletedAt DateTime?
+
+  @@unique([providerId, accountId])
+  @@map("Account")
+}
+
+model Verification {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  value      String
+  expiresAt  DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("Verification")
+}
+
+model Activity {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  objectGuid String
+
+  actionType  String
+  description String?
+  category    String?
+
+  data    Json?
+  context ActivityContext?
+
+  onlyAdmin Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  isDeleted Boolean   @default(false)
+  deletedBy String?
+  deletedAt DateTime?
+
+  sessionId String?  @db.ObjectId
+  session   Session? @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+}
+
+type ActivityContext {
+  ipAddress String
+  userAgent String
+}
+
+model ErrorLog {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  objectGuid String
+
+  error     String
+  resource  String
+  status    String
+  endpoint  String
+  timestamp DateTime @default(now())
+
+  data    Json?
+  context ActivityContext?
+
+  sessionId String  @db.ObjectId
+  session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  isDeleted Boolean   @default(false)
+  deletedBy String?
+  deletedAt DateTime?
+}
+
+model Quiz {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  objectGuid String
+  slug       String
+
+  title       String
+  description String
+  questionCategories   QuestionCategory[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy String   @db.ObjectId
+  updatedBy String?  @db.ObjectId
+
+  published   Boolean   @default(false)
+  publishedAt DateTime?
+
+  isDeleted Boolean   @default(false)
+  deletedBy String?   @db.ObjectId
+  deletedAt DateTime?
+
+  history QuizHistory[]
+
+  @@map("Quiz")
+}
+
+type QuestionCategory {
+  objectGuid String
+  slug       String
+
+  label String
+  description String?
+  sortOrder Int
+
+  questions  Question[]
+}
+
+type Question {
+  objectGuid String
+  slug       String
+
+  text     String
+  options  Option[]
+  category String
+  sortOrder Int
+
+  quizId String
+}
+
+type Option {
+  objectGuid String
+  slug       String
+
+  text   String
+  points Int
+  sortOrder Int
+
+  questionId String
+}
+
+model QuizHistory {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  objectGuid String
+
+  quizId String @db.ObjectId
+  quiz   Quiz   @relation(fields: [quizId], references: [id])
+
+  snapshot Json
+
+  action  HistoryAction
+  actorId String        @db.ObjectId
+  actor   User          @relation("UserQuizActivities", fields: [actorId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@index([quizId])
+  @@map("QuizHistory")
+}
+
+enum HistoryAction {
+  CREATED
+  UPDATED
+  DELETED
+  RESTORED
+}

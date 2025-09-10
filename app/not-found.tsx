@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { siteConfig } from "./siteConfig";
+import { siteConfig } from "../lib/config/site";
 
 
 export default function NotFound() {
