@@ -1,24 +1,27 @@
 import { Button } from "@/components/ui/button";
 import { Page } from "@/components/ui/layout/page-layout";
-import configPromise from "@payload-config";
 import Image from "next/image";
 import Link from "next/link";
-import { getPayload } from "payload";
 
 import Fearless3Stack from "@/public/images/live-fearless-3-stack.png";
 import FearlessBook from "@/public/images/live-fearless-book.png";
 
+const PAYLOAD_API_URL = process.env.NEXT_PUBLIC_PAYLOAD_PUBLIC_URL || "https://admin.fearless.nerissagolden.com";
+
 async function getHomePageData() {
-  const payload = await getPayload({ config: configPromise });
+  try {
+    const res = await fetch(`${PAYLOAD_API_URL}/api/home?limit=1`, {
+      cache: "no-store", // optional for fresh content
+    });
 
-  const result = await payload.find({
-    collection: "home",
-    limit: 1,
-    pagination: false,
-    overrideAccess: true, // optional: bypass access checks
-  });
+    if (!res.ok) return null;
 
-  return result.docs?.[0] || null;
+    const json = await res.json();
+    return json.docs?.[0] || null;
+  } catch (err) {
+    console.error("Failed to fetch home page data:", err);
+    return null;
+  }
 }
 
 export default async function HomePage() {

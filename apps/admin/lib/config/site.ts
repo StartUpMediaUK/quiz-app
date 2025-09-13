@@ -10,4 +10,7 @@ export const siteConfig = {
       signIn: "/sign-in",
     },
   },
-}
+  externalLinks: {
+    mainSite: process.env.NEXT_PUBLIC_APP_PUBLIC_URL ?? "",
+  },
+};

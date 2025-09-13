@@ -34,15 +34,17 @@ export default function QuizzesPage () {
             Quizzes
           </div>
           <Button asChild>
-            <Link href={siteConfig.baseLinks.quizzes+"/create"}>
-              <PlusIcon /> 
+            <Link href={siteConfig.baseLinks.quizzes + "/create"}>
+              <PlusIcon />
               New Quiz
             </Link>
           </Button>
         </PageHeaderHeading>
         <PageHeaderDescription>Some text goes here</PageHeaderDescription>
       </PageHeader>
-      <DataTable data={formattedQuizzes} columns={quizColumns} />
+      <div className="grid grid-cols-1">
+        <DataTable data={formattedQuizzes} columns={quizColumns} />
+      </div>
     </Page>
-  )
+  );
 }
