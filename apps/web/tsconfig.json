@@ -21,8 +21,10 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@payload-config": ["../../apps/web/payload.config.ts"]
     }
   },
   "include": [
