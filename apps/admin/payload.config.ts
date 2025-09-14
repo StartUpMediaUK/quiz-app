@@ -1,18 +1,16 @@
 import { mongooseAdapter } from '@payloadcms/db-mongodb';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
-import { buildConfig } from 'payload';
-import sharp from 'sharp';
+import { buildConfig } from "payload";
 
-import { Home } from './lib/collections/home';
-import { Users } from './lib/collections/users';
+import { Home } from "./lib/collections/home";
+import { Users } from "./lib/collections/users";
 
 export default buildConfig({
   serverURL: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3001",
   editor: lexicalEditor(),
   collections: [Home, Users],
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: process.env.PAYLOAD_SECRET || "",
   db: mongooseAdapter({
-    url: process.env.DATABASE_URI || '',
+    url: process.env.DATABASE_URI || "",
   }),
-  sharp,
 });

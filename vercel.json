@@ -1,3 +1,0 @@
-{
-  "installCommand": "npm_config_arch=x64 npm_config_platform=linux pnpm install"
-}
