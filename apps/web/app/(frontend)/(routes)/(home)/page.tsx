@@ -6,7 +6,10 @@ import Link from "next/link";
 import Fearless3Stack from "@/public/images/live-fearless-3-stack.png";
 import FearlessBook from "@/public/images/live-fearless-book.png";
 
-const PAYLOAD_API_URL = process.env.NEXT_PUBLIC_PAYLOAD_PUBLIC_URL || "https://admin.fearless.nerissagolden.com";
+const PAYLOAD_API_URL =
+  process.env.NEXT_PUBLIC_PAYLOAD_PUBLIC_URL || process.env.NODE_ENV === "development"
+    ? "http://localhost:3001"
+    : "https://admin.fearless.nerissagolden.com";
 
 async function getHomePageData() {
   try {
@@ -77,6 +80,11 @@ export default async function HomePage() {
               <h3 className="text-4xl font-serif font-bold text-foreground">{home.aboutTitle}</h3>
               <div className="space-y-4 text-lg leading-relaxed text-muted-foreground whitespace-pre-line">
                 <p>{home.aboutText}</p>
+              </div>
+              <div className="pt-4">
+                <Button asChild size="lg" className="text-lg px-10 py-6 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl">
+                  <Link href={home?.aboutCTALink}>{home?.aboutCTAText}</Link>
+                </Button>
               </div>
             </div>
             <div className="flex justify-center">

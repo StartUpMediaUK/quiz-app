@@ -40,9 +40,14 @@ export function Navbar() {
               </Link>
             </div>
           </nav>
-          <Button variant="outline" className="hidden h-10 font-semibold sm:block" asChild>
-            <Link href="https://nerissagolden.com">Go to site</Link>
-          </Button>
+          <div className="flex items-center space-x-2">
+            <Button className="hidden h-10 font-semibold sm:block bg-primary hover:bg-primary/90 text-primary-foreground" asChild>
+              <Link href={siteConfig.externalLinks.liveFearlessBook}>Buy the book</Link>
+            </Button>
+            <Button variant="outline" className="hidden h-10 font-semibold sm:block" asChild>
+              <Link href="https://nerissagolden.com">Go to site</Link>
+            </Button>
+          </div>
           <Button
             onClick={() => setOpen(!open)}
             variant="secondary"
@@ -64,6 +69,9 @@ export function Navbar() {
               <Link href="#about">About</Link>
             </li>
           </ul>
+          <Button variant="secondary" className="text-lg" asChild>
+            <Link href="https://nerissagolden.com">Buy the book!</Link>
+          </Button>
           <Button variant="secondary" className="text-lg" asChild>
             <Link href="https://nerissagolden.com">Go to site</Link>
           </Button>

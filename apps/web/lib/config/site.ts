@@ -13,4 +13,7 @@ export const siteConfig = {
       },
     },
   },
+  externalLinks: {
+    liveFearlessBook: "https://amzn.to/4pgFgUz",
+  },
 };
