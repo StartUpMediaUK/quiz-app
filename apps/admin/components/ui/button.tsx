@@ -83,6 +83,7 @@ const buttonVariants = tv({
         "disabled:text-gray-400",
         "dark:disabled:text-gray-600",
       ],
+      "ghost-destructive": ["text-destructive hover:text-destructive-foreground hover:bg-destructive"],
       destructive: [
         // text color
         "text-white",

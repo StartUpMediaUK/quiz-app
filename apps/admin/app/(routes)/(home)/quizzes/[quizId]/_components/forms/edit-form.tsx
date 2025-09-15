@@ -24,15 +24,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { QuizWithVersion } from "@/lib/types/quiz";
 import { api } from "@/trpc/react";
-import { Quiz } from "@prisma/client";
 import { Plus } from "lucide-react";
 import slugify from "slugify";
 import { CategorySection } from "../_category-section";
 import { ResultRangeSection } from "../_result-range-section";
 
 interface EditQuizFormProps {
-  data: Quiz;
+  data: QuizWithVersion;
 }
 
 const FormSchema = z.object({
@@ -41,41 +41,50 @@ const FormSchema = z.object({
   slug: z.string(),
   title: z.string().min(1, "Quiz title is required"),
   description: z.string(),
-  resultRanges: z.array(
-    z.object({
-      objectGuid: z.string(),
-      slug: z.string(),
-      url: z.string(),
-      label: z.string(),
-      min: z.number().min(0, "Min must be a positive number"),
-      max: z.number().min(0, "Max must be a positive number"),
-    }).refine(
-      (data) => data.max >= data.min,
-      { message: "Max must be greater than or equal to Min", path: ["max"] }
+  resultRanges: z
+    .array(
+      z
+        .object({
+          objectGuid: z.string(),
+          slug: z.string(),
+          url: z.string(),
+          label: z.string(),
+          min: z.number().min(0, "Min must be a positive number"),
+          max: z.number().min(0, "Max must be a positive number"),
+        })
+        .refine((data) => data.max >= data.min, { message: "Max must be greater than or equal to Min", path: ["max"] })
     )
-  ).min(1, "At least one result range is required"),
-  questionCategories: z.array(z.object({
-    objectGuid: z.string(),
-    slug: z.string(),
-    label: z.string().min(1, "Category label is required"),
-    description: z.string().nullable(),
-    sortOrder: z.number(),
-    questions: z.array(z.object({
-      objectGuid: z.string(),
-      slug: z.string(),
-      text: z.string().min(1, "Question text is required"),
-      category: z.string(),
-      sortOrder: z.number(),
-      
-      options: z.array(z.object({
+    .min(1, "At least one result range is required"),
+  questionCategories: z
+    .array(
+      z.object({
         objectGuid: z.string(),
-        sortOrder: z.number(),
         slug: z.string(),
-        text: z.string().min(1, "Question text is required"),
-        points: z.number().min(0, "Points must be a positive number"),
-      }))
-    }))
-  })).min(1, "At least one question is required")
+        label: z.string().min(1, "Category label is required"),
+        description: z.string().nullable(),
+        sortOrder: z.number(),
+        questions: z.array(
+          z.object({
+            objectGuid: z.string(),
+            slug: z.string(),
+            text: z.string().min(1, "Question text is required"),
+            category: z.string(),
+            sortOrder: z.number(),
+
+            options: z.array(
+              z.object({
+                objectGuid: z.string(),
+                sortOrder: z.number(),
+                slug: z.string(),
+                text: z.string().min(1, "Question text is required"),
+                points: z.number().min(0, "Points must be a positive number"),
+              })
+            ),
+          })
+        ),
+      })
+    )
+    .min(1, "At least one question is required"),
 });
 
 export type EditQuizFormValues = z.infer<typeof FormSchema>;
@@ -87,32 +96,54 @@ export function EditQuizForm({ data }: EditQuizFormProps) {
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    }),
-  )
+    })
+  );
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      ...data
+      id: data.id,
+      objectGuid: data.objectGuid,
+      slug: data.slug,
+      description: data.version.description,
+      title: data.version.title,
+      resultRanges: data.version.resultRanges,
+      questionCategories: data.version.questionCategories,
     },
   });
 
-  const { control, handleSubmit, register, watch, setValue, formState: { errors } } = form
+  const {
+    control,
+    handleSubmit,
+    register,
+    watch,
+    setValue,
+    formState: { errors },
+  } = form;
 
-  const { fields: categoryFields, append: appendCategory, remove: removeCategory, move: moveCategory, } = useFieldArray({
+  const {
+    fields: categoryFields,
+    append: appendCategory,
+    remove: removeCategory,
+    move: moveCategory,
+  } = useFieldArray({
     control,
     name: "questionCategories",
-  })
-  const { fields: resultRangeFields, append: appendResultRange, remove: removeResultRange, } = useFieldArray({
+  });
+  const {
+    fields: resultRangeFields,
+    append: appendResultRange,
+    remove: removeResultRange,
+  } = useFieldArray({
     control,
     name: "resultRanges",
-  })
+  });
 
   const handleTitleChange = (value: string) => {
-    setValue("title", value)
-    const slug = slugify(value, { lower: true, strict: true })
-    setValue("slug", slug)
-  }
+    setValue("title", value);
+    const slug = slugify(value, { lower: true, strict: true });
+    setValue("slug", slug);
+  };
 
   const utils = api.useUtils();
 
@@ -153,9 +184,9 @@ export function EditQuizForm({ data }: EditQuizFormProps) {
       label: "",
       description: "",
       questions: [],
-      sortOrder: watch("questionCategories").length
-    })
-  }
+      sortOrder: watch("questionCategories").length,
+    });
+  };
   const addResultRange = () => {
     appendResultRange({
       objectGuid: "",
@@ -163,25 +194,25 @@ export function EditQuizForm({ data }: EditQuizFormProps) {
       label: "",
       min: 0,
       max: 1,
-      url: ""
-    })
-  }
+      url: "",
+    });
+  };
 
   const handleCategoryDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event
+    const { active, over } = event;
 
     if (active.id !== over?.id) {
-      const oldIndex = categoryFields.findIndex((item) => item.id === active.id)
-      const newIndex = categoryFields.findIndex((item) => item.id === over?.id)
+      const oldIndex = categoryFields.findIndex((item) => item.id === active.id);
+      const newIndex = categoryFields.findIndex((item) => item.id === over?.id);
 
-      moveCategory(oldIndex, newIndex)
+      moveCategory(oldIndex, newIndex);
 
-      const reorderedCategories = arrayMove(categoryFields, oldIndex, newIndex)
+      const reorderedCategories = arrayMove(categoryFields, oldIndex, newIndex);
       reorderedCategories.forEach((_, index) => {
-        setValue(`questionCategories.${index}.sortOrder`, index)
-      })
+        setValue(`questionCategories.${index}.sortOrder`, index);
+      });
     }
-  }
+  };
 
   return (
     <Form {...form}>

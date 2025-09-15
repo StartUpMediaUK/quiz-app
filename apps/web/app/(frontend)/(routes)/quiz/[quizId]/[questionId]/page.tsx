@@ -15,42 +15,40 @@ import { ArrowLeft } from "lucide-react"
 import { useQuiz } from "../_components/quiz-context"
 import QuestionNotFound from "./_components/question-not-found"
 
-
 export default function QuestionPage() {
-  const { questionId } = useParams<{ questionId: string }>()
-  const router = useRouter()
+  const { questionId } = useParams<{ questionId: string }>();
+  const router = useRouter();
 
-  const { answers, addAnswer, quiz, isLoading } = useQuiz()
+  const { answers, addAnswer, quiz, isLoading } = useQuiz();
 
-  if (!quiz) redirect("/")
-  const [selected, setSelected] = useState<string | null>(answers.find((a) => a.questionId === questionId)?.optionId || null)
+  if (!quiz) redirect("/");
+  const [selected, setSelected] = useState<string | null>(answers.find((a) => a.questionId === questionId)?.optionId || null);
 
-  const questionIndex = getQuizQuestionIndexBySlug(quiz, questionId) ?? 0
-  const question = getQuizQuestionBySlug(quiz, questionId)
-  const category = getQuizCategoryByQuestionSlug(quiz, questionId)
+  const questionIndex = getQuizQuestionIndexBySlug(quiz, questionId) ?? 0;
+  const question = getQuizQuestionBySlug(quiz, questionId);
+  const category = getQuizCategoryByQuestionSlug(quiz, questionId);
 
-  if (isLoading) return <LoadingSpinner />
-  if (!question) return <QuestionNotFound />
-  const progress = (questionIndex / getQuizLength(quiz.questionCategories)) * 100
+  if (isLoading) return <LoadingSpinner />;
+  if (!question) return <QuestionNotFound />;
+  const progress = (questionIndex / getQuizLength(quiz.version.questionCategories)) * 100;
 
-
-  const next = getQuizQuestionByIndex(quiz, questionIndex + 1)
-  const prev = getQuizQuestionByIndex(quiz, questionIndex - 1)
+  const next = getQuizQuestionByIndex(quiz, questionIndex + 1);
+  const prev = getQuizQuestionByIndex(quiz, questionIndex - 1);
 
   const handleSubmit = () => {
-    if (!selected) return
+    if (!selected) return;
 
-    const option = question.options.find((o) => o.slug === selected)
-    if (!option) return
+    const option = question.options.find((o) => o.slug === selected);
+    if (!option) return;
 
-    addAnswer({ questionId: question.slug, optionId: option.slug, points: option.points })
+    addAnswer({ questionId: question.slug, optionId: option.slug, points: option.points });
 
     if (next) {
-      router.push(`/quiz/${quiz.slug}/${next.slug}`)
+      router.push(`/quiz/${quiz.slug}/${next.slug}`);
     } else {
-      router.push(`/quiz/${quiz.slug}/result`)
+      router.push(`/quiz/${quiz.slug}/result`);
     }
-  }
+  };
 
   return (
     <Page paddingTop={false} gradientBackground>
@@ -108,7 +106,10 @@ export default function QuestionPage() {
               Back
             </Button>
           ) : (
-            <Button variant="outline" className="border-red-300 text-maroon hover:bg-red-50 bg-transparent" onClick={() => router.push(`/quiz/${quiz.slug}/start`)}>
+            <Button
+              variant="outline"
+              className="border-red-300 text-maroon hover:bg-red-50 bg-transparent"
+              onClick={() => router.push(`/quiz/${quiz.slug}/start`)}>
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Start
             </Button>

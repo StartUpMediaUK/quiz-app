@@ -6,19 +6,22 @@ import { Page, PageHeader, PageHeaderDescription, PageHeaderHeading } from "@/co
 import { siteConfig } from "@/lib/config/site";
 import { api } from "@/trpc/react";
 import { RiArrowLeftLine } from "@remixicon/react";
-import { PlusIcon } from "lucide-react";
+import { format } from "date-fns";
 import Link from "next/link";
-import { QuizColumn, quizColumns } from "./_components/columns";
+import { SubmissionColumn, columns } from "./_components/columns";
 
-export default function QuizzesPage () {
-  const {data: quizzes} = api.quiz.getAll.useQuery({})
+export default function SubmissionsPage () {
+  const {data: submissions} = api.submission.getAll.useQuery({})
   
-  const formattedQuizzes: QuizColumn[] =
-    quizzes?.map((item) => ({
+  const formattedSubmissions: SubmissionColumn[] =
+    submissions?.map((item) => ({
       id: item.objectGuid,
-      title: item.version.title,
-      questions: item.version.questionCategories.reduce((acc, category) => acc + (category.questions.length ?? 0), 0),
-      published: item.published,
+      quizId: item.quizVersion.quiz.objectGuid,
+      quizVersion: item.quizVersion.version,
+      quizVersionId: item.quizVersion.objectGuid,
+      score: item.score,
+      result: item.quizVersion.resultRanges.find(( resRang ) => item.resultRangeId === resRang.objectGuid)?.label ?? "",
+      date: format(item.createdAt, "PPp")
     })) ?? [];
 
   return (
@@ -32,19 +35,13 @@ export default function QuizzesPage () {
                 Back
               </Link>
             </Button>
-            Quizzes
+            Submissions
           </div>
-          <Button asChild>
-            <Link href={siteConfig.baseLinks.quizzes + "/create"}>
-              <PlusIcon />
-              New Quiz
-            </Link>
-          </Button>
         </PageHeaderHeading>
         <PageHeaderDescription>Some text goes here</PageHeaderDescription>
       </PageHeader>
       <div className="grid grid-cols-1">
-        <DataTable data={formattedQuizzes} columns={quizColumns} />
+        <DataTable data={formattedSubmissions} columns={columns} searchKey="id" />
       </div>
     </Page>
   );

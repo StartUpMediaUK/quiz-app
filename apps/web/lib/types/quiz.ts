@@ -25,3 +25,9 @@ type Option = {
 
 export type { Option, Question, QuestionCategory, Quiz }
 
+import { Quiz as PrismaQuiz, QuizVersion } from "@prisma/client";
+
+type QuizWithVersion = PrismaQuiz & { version: QuizVersion };
+
+export type { QuizWithVersion };
+

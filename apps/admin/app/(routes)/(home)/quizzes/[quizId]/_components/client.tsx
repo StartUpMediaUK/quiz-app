@@ -9,15 +9,19 @@ import { api } from "@/trpc/react"
 import { RiArrowLeftLine, RiPokerDiamondsFill, RiPokerDiamondsLine } from "@remixicon/react"
 import { LoaderCircle } from "lucide-react"
 import Link from "next/link"
-import { toast } from "sonner"
-import { EditQuizForm } from "./forms/edit-form"
+import { useSearchParams } from "next/navigation";
+import { toast } from "sonner";
+import { EditQuizForm } from "./forms/edit-form";
 
 interface QuizDetailClientProps {
   quizId: string;
 }
 
 export const QuizDetailClient = ({ quizId }: QuizDetailClientProps) => {
-  const {data: quiz, isLoading } = api.quiz.getById.useQuery({ quizId })
+  const searchParams = useSearchParams();
+  const versionParam = searchParams.get("version");
+
+  const { data: quiz, isLoading } = api.quiz.getById.useQuery({ quizId, versionId: versionParam ?? undefined });
   const utils = api.useUtils();
 
   const togglePublishQuiz = api.quiz.togglePublishQuiz.useMutation({
@@ -27,13 +31,12 @@ export const QuizDetailClient = ({ quizId }: QuizDetailClientProps) => {
     },
   });
   if (isLoading) {
-    return <LoadingPage />
+    return <LoadingPage />;
   }
   if (!quiz) {
     return <div>Quiz not found.</div>;
   }
-  
-  
+
   return (
     <Page admin>
       <PageHeader>
@@ -45,24 +48,36 @@ export const QuizDetailClient = ({ quizId }: QuizDetailClientProps) => {
                 Back
               </Link>
             </Button>
-            {quiz.title}
+            {quiz.version.title} <span className="-ml-3 -mb-3 text-sm">v{quiz.version.version}</span>
             <Badge variant={quiz.published ? "default" : "secondary"}>{quiz.published ? "Published" : "Draft"}</Badge>
           </div>
           {quiz.published ? (
             <Button variant="outline" onClick={() => togglePublishQuiz.mutateAsync({ quizId: quiz.id, publishToggle: false })}>
               <RiPokerDiamondsLine className="mr-1 h-4 w-4" />
-              {togglePublishQuiz.status === "pending" ? <><LoaderCircle className="animate-spin mr-1 h-4 w-4" /> Unpublishing Quiz</> : "Unpublish Quiz"}
+              {togglePublishQuiz.status === "pending" ? (
+                <>
+                  <LoaderCircle className="animate-spin mr-1 h-4 w-4" /> Unpublishing Quiz
+                </>
+              ) : (
+                "Unpublish Quiz"
+              )}
             </Button>
           ) : (
             <Button variant="primary" onClick={() => togglePublishQuiz.mutateAsync({ quizId: quiz.id, publishToggle: true })}>
               <RiPokerDiamondsFill className="mr-1 h-4 w-4" />
-              {togglePublishQuiz.status === "pending" ? <><LoaderCircle className="animate-spin mr-1 h-4 w-4" /> Publishing Quiz</> : "Publish Quiz"}
+              {togglePublishQuiz.status === "pending" ? (
+                <>
+                  <LoaderCircle className="animate-spin mr-1 h-4 w-4" /> Publishing Quiz
+                </>
+              ) : (
+                "Publish Quiz"
+              )}
             </Button>
           )}
         </PageHeaderHeading>
-        <PageHeaderDescription>{quiz.description || "No description provided for this quiz."}</PageHeaderDescription>
+        <PageHeaderDescription>{quiz.version.description || "No description provided for this quiz."}</PageHeaderDescription>
       </PageHeader>
       <EditQuizForm data={quiz} />
     </Page>
-  )
-}
+  );
+};

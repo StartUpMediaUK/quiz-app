@@ -4,6 +4,7 @@ export const siteConfig = {
   description: "A interactive quiz application.",
   baseLinks: {
     home: "/",
+    submissions: "/submissions",
     quizzes: "/quizzes",
     settings: "/settings",
     auth: {

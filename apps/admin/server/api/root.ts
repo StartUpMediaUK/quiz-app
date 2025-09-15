@@ -1,6 +1,9 @@
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
+import { activityRouter } from "./routers/activity";
 import { currentUserRouter } from "./routers/current-user";
+import { errorLogRouter } from "./routers/errorLog";
 import { quizRouter } from "./routers/quiz";
+import { submissionRouter } from "./routers/submission";
 
 /**
  * This is the primary router for your server.
@@ -9,6 +12,9 @@ import { quizRouter } from "./routers/quiz";
  */
 export const appRouter = createTRPCRouter({
   quiz: quizRouter,
+  activity: activityRouter,
+  errorLog: errorLogRouter,
+  submission: submissionRouter,
   currentUser: currentUserRouter,
 });
 

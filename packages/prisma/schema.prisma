@@ -120,6 +120,7 @@ model Activity {
 }
 
 type ActivityContext {
+  host String?
   ipAddress String
   userAgent String
 }
@@ -150,12 +151,6 @@ model Quiz {
   objectGuid String
   slug       String
 
-  title              String
-  description        String
-  questionCategories QuestionCategory[]
-
-  resultRanges ResultRange[]
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   createdBy String   @db.ObjectId
@@ -169,8 +164,31 @@ model Quiz {
   deletedAt DateTime?
 
   history QuizHistory[]
+  versions QuizVersion[]
 
   @@map("Quiz")
+}
+
+model QuizVersion {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  objectGuid String
+
+  quizId String @db.ObjectId
+  quiz   Quiz   @relation(fields: [quizId], references: [id])
+
+  version   Float
+  title     String
+  description String
+  questionCategories QuestionCategory[]
+  resultRanges ResultRange[]
+
+  createdAt DateTime @default(now())
+  createdBy String   @db.ObjectId
+
+  submissions QuizSubmission[]
+
+  @@index([quizId, version])
+  @@map("QuizVersion")
 }
 
 type QuestionCategory {
@@ -243,4 +261,25 @@ enum HistoryAction {
   UPDATED
   DELETED
   RESTORED
+}
+
+model QuizSubmission {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  objectGuid String
+  
+  quizVersionId String @db.ObjectId
+  quizVersion   QuizVersion @relation(fields: [quizVersionId], references: [id])
+
+  user   ActivityContext?
+  answers  Answer[]
+  score    Int
+  resultRangeId String
+
+  createdAt DateTime @default(now())
+}
+
+type Answer {
+  questionId String
+  optionId String
+  points Int
 }

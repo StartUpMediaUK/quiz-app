@@ -73,31 +73,30 @@ const QuestionCategorySchemaWithId = z.object({
   })),
 })
 
-const quizEditMutation = z.object({ 
+const quizEditMutation = z.object({
   ...required,
   quizId: z.string(),
   objectGuid: z.string(),
   title: z.string().min(1, "Quiz title is required"),
-  
+
   slug: z.string(),
   description: z.string(),
   questionCategories: z.array(QuestionCategorySchemaWithId).min(1, "At least one question is required"),
-  resultRanges: z.array(
-    z.object({
-      objectGuid: z.string().optional(),
-      url: z.string(),
-      slug: z.string(),
-      label: z.string(),
-      min: z.number().min(0, "Min must be a positive number"),
-      max: z.number().min(0, "Max must be a positive number"),
-    }).refine(
-      (data) => data.max >= data.min,
-      { message: "Max must be greater than or equal to Min", path: ["max"] }
+  resultRanges: z
+    .array(
+      z
+        .object({
+          objectGuid: z.string().optional(),
+          url: z.string(),
+          slug: z.string(),
+          label: z.string(),
+          min: z.number().min(0, "Min must be a positive number"),
+          max: z.number().min(0, "Max must be a positive number"),
+        })
+        .refine((data) => data.max >= data.min, { message: "Max must be greater than or equal to Min", path: ["max"] })
     )
-  ).min(1, "At least one result range is required"),
-  published: z.boolean().default(false),
-
-})
+    .min(1, "At least one result range is required"),
+});
 
 export { quizCreateMutation, quizEditMutation };
 

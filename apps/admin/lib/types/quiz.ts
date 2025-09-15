@@ -1,27 +1,7 @@
-type Quiz = {
-  id: string
-  title: string
-  description: string
-  questions: Question[]
-}
+import { Quiz, QuizSubmission, QuizVersion } from "@prisma/client";
 
-type Question = {
-  id: string
-  categoryId: string;
-  text: string
-  options: Option[]
-}
+type QuizWithVersion = Quiz & { version: QuizVersion };
+type QuizVersionWithQuiz = QuizVersion & { quiz: Quiz };
+type SubmissionWithQuizVersion = QuizSubmission & { quizVersion: QuizVersionWithQuiz };
 
-type QuestionCategory = {
-  id: string;
-  label: string;
-}
-
-type Option = {
-  id: string
-  text: string
-  points: number;
-}
-
-export type { Option, Question, QuestionCategory, Quiz }
-
+export type { QuizVersionWithQuiz, QuizWithVersion, SubmissionWithQuizVersion };

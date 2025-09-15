@@ -1,4 +1,5 @@
-import { QuestionCategory, Quiz } from "@prisma/client";
+import { QuestionCategory } from "@prisma/client";
+import { QuizWithVersion } from "../types/quiz";
 
 const getQuizLength = (questionCategories: QuestionCategory[]) => {
   const quizLength = questionCategories.reduce((sum, cat) => sum + (cat.questions?.length ?? 0), 0);
@@ -6,10 +7,10 @@ const getQuizLength = (questionCategories: QuestionCategory[]) => {
   return quizLength
 }
 
-const getFirstQuizQuestion = (quiz: Quiz) => {
-  if (!quiz?.questionCategories?.length) return null;
+const getFirstQuizQuestion = (quiz: QuizWithVersion) => {
+  if (!quiz?.version?.questionCategories?.length) return null;
 
-  for (const category of quiz.questionCategories) {
+  for (const category of quiz.version.questionCategories) {
     if (category.questions?.length) {
       return category.questions[0];
     }
@@ -18,10 +19,10 @@ const getFirstQuizQuestion = (quiz: Quiz) => {
   return null; // no questions found
 };
 
-const getQuizQuestionBySlug = (quiz: Quiz, questionSlug: string) => {
-  if (!quiz?.questionCategories?.length) return null;
+const getQuizQuestionBySlug = (quiz: QuizWithVersion, questionSlug: string) => {
+  if (!quiz?.version?.questionCategories?.length) return null;
 
-  for (const category of quiz.questionCategories) {
+  for (const category of quiz.version.questionCategories) {
     const found = category.questions?.find((q) => q.slug === questionSlug);
     if (found) return found;
   }
@@ -29,12 +30,12 @@ const getQuizQuestionBySlug = (quiz: Quiz, questionSlug: string) => {
   return null; // question not found
 };
 
-const getQuizQuestionIndexBySlug = (quiz: Quiz, questionSlug: string): number | null => {
-  if (!quiz?.questionCategories?.length) return null;
+const getQuizQuestionIndexBySlug = (quiz: QuizWithVersion, questionSlug: string): number | null => {
+  if (!quiz?.version?.questionCategories?.length) return null;
 
   let counter = 0;
 
-  for (const category of quiz.questionCategories) {
+  for (const category of quiz.version.questionCategories) {
     for (const question of category.questions) {
       if (question.slug === questionSlug) return counter;
       counter++;
@@ -44,12 +45,12 @@ const getQuizQuestionIndexBySlug = (quiz: Quiz, questionSlug: string): number | 
   return null; // question not found
 };
 
-const getQuizQuestionByIndex = (quiz: Quiz, index: number) => {
-  if (!quiz?.questionCategories?.length) return null;
+const getQuizQuestionByIndex = (quiz: QuizWithVersion, index: number) => {
+  if (!quiz?.version?.questionCategories?.length) return null;
 
   let counter = 0;
 
-  for (const category of quiz.questionCategories) {
+  for (const category of quiz.version.questionCategories) {
     for (const question of category.questions) {
       if (counter === index) return question;
       counter++;
@@ -58,10 +59,10 @@ const getQuizQuestionByIndex = (quiz: Quiz, index: number) => {
 
   return null; // index out of bounds
 };
-const getQuizCategoryByQuestionSlug = (quiz: Quiz, questionSlug: string) => {
-  if (!quiz?.questionCategories?.length) return null;
+const getQuizCategoryByQuestionSlug = (quiz: QuizWithVersion, questionSlug: string) => {
+  if (!quiz?.version?.questionCategories?.length) return null;
 
-  for (const category of quiz.questionCategories) {
+  for (const category of quiz.version.questionCategories) {
     const found = category.questions?.some((q) => q.slug === questionSlug);
     if (found) return category;
   }

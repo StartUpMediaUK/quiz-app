@@ -1,34 +1,33 @@
 "use client"
 
+import { QuizWithVersion } from "@/lib/types/quiz";
 import { api } from "@/trpc/react";
-import { Option, QuestionCategory, Quiz } from "@prisma/client";
+import { Answer, Option, QuestionCategory } from "@prisma/client";
 import { useParams } from "next/navigation";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
-type Answer = { questionId: string; optionId: string; points: number }
-
 type QuizContextType = {
-  answers: Answer[]
-  quiz: Quiz | null;
+  answers: Answer[];
+  quiz: QuizWithVersion | null;
   isLoading: boolean;
-  addAnswer: (answer: Answer) => void
-  reset: () => void
-}
+  addAnswer: (answer: Answer) => void;
+  reset: () => void;
+};
 
-const QuizContext = createContext<QuizContextType | undefined>(undefined)
+const QuizContext = createContext<QuizContextType | undefined>(undefined);
 
 export function QuizProvider({ children }: { children: ReactNode }) {
-  const params = useParams()
-  
-  const { data: quiz, isLoading } = api.quiz.getBySlug.useQuery({ quizSlug: params?.quizId as string ?? "", published: true }) 
+  const params = useParams();
 
-  const [answers, setAnswers] = useState<Answer[]>([])
+  const { data: quiz, isLoading } = api.quiz.getBySlug.useQuery({ quizSlug: (params?.quizId as string) ?? "", published: true });
+
+  const [answers, setAnswers] = useState<Answer[]>([]);
   const [questionCategories, setQuestionCategories] = useState<QuestionCategory[]>([]);
 
   useEffect(() => {
     if (!quiz) return;
 
-    const randomizedCategories = quiz.questionCategories.map((cat) => ({
+    const randomizedCategories = quiz.version.questionCategories.map((cat) => ({
       ...cat,
       questions: cat.questions.map((q) => ({
         ...q,
@@ -39,28 +38,23 @@ export function QuizProvider({ children }: { children: ReactNode }) {
     setQuestionCategories(randomizedCategories);
   }, [quiz]);
 
-
   const addAnswer = (answer: Answer) => {
     setAnswers((prev) => {
-      const filtered = prev.filter((a) => a.questionId !== answer.questionId)
-      return [...filtered, answer]
-    })
-  }
+      const filtered = prev.filter((a) => a.questionId !== answer.questionId);
+      return [...filtered, answer];
+    });
+  };
 
-  const reset = () => setAnswers([])
+  const reset = () => setAnswers([]);
 
   if (!quiz) {
-    return (
-      <QuizContext.Provider value={{ answers, addAnswer, isLoading, reset, quiz: null }}>
-        {children}
-      </QuizContext.Provider>
-    )
+    return <QuizContext.Provider value={{ answers, addAnswer, isLoading, reset, quiz: null }}>{children}</QuizContext.Provider>;
   }
   return (
-    <QuizContext.Provider value={{ answers, addAnswer, isLoading, reset, quiz: { ...quiz, questionCategories } }}>
+    <QuizContext.Provider value={{ answers, addAnswer, isLoading, reset, quiz: { ...quiz, version: { ...quiz.version, questionCategories } } }}>
       {children}
     </QuizContext.Provider>
-  )
+  );
 }
 
 export function useQuiz() {
