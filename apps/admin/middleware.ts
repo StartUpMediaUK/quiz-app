@@ -3,8 +3,9 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 const authApiRoutePrefix = "/api/auth/";
-const publicApiRoutes = ["/api/home"]; // Add any other public APIs here
+const publicApiRoutes = ["/api/home"];
 const publicRoutes = ["/sign-in"];
+const blockedInProd = ["/api/auth/reference"]; // Blocked route
 
 function isAuthApiRoute(pathname: string) {
   return pathname.startsWith(authApiRoutePrefix);
@@ -14,18 +15,20 @@ export async function middleware(request: NextRequest): Promise<NextResponse | u
   const { pathname } = request.nextUrl;
   const sessionCookie = getSessionCookie(request);
 
+  // Block sensitive route in production
+  if (blockedInProd.includes(pathname) && process.env.NODE_ENV === "production") {
+    return NextResponse.rewrite(new URL("/404", request.url)); // or NextResponse.next() with status 404
+  }
+
   // Allow auth API routes
   if (isAuthApiRoute(pathname)) return NextResponse.next();
 
-  // Allow public API routes (like /api/home)
+  // Allow public API routes
   if (publicApiRoutes.includes(pathname)) return NextResponse.next();
 
-  // Allow public pages (like /sign-in) without auth
+  // Allow public pages without auth
   if (publicRoutes.includes(pathname)) {
-    if (sessionCookie) {
-      // If already signed in, redirect to home
-      return NextResponse.redirect(new URL("/", request.url));
-    }
+    if (sessionCookie) return NextResponse.redirect(new URL("/", request.url));
     return NextResponse.next();
   }
 
