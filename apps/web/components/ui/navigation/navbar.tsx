@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/lib/config/site";
 import useScroll from "@/lib/useScroll";
 import { cn } from "@/lib/utils";
-import { Logo } from "@/public/Logo";
 import { RiCloseFill, RiMenuFill } from "@remixicon/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -29,8 +28,7 @@ export function Navbar() {
       <div className="w-full md:my-auto">
         <div className="relative flex items-center justify-between">
           <Link href={siteConfig.baseLinks.home} aria-label="Home">
-            <span className="sr-only">Solar Tech Logo</span>
-            <Logo />
+            <span className="text-3xl font-bold font-serif">Nerissa Golden</span>
           </Link>
           <nav className="hidden sm:block md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:transform">
             <div className="flex items-center gap-10 font-medium">

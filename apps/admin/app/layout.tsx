@@ -1,6 +1,7 @@
 import { AppContainer } from "@/components/ui/layout/container";
 import { TRPCReactProvider } from "@/trpc/react";
 import type { Metadata } from "next";
+import { ThemeProvider } from "next-themes";
 import { Geist, Geist_Mono } from "next/font/google";
 import { siteConfig } from "../lib/config/site";
 import "./globals.css";
@@ -40,10 +41,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen overflow-x-hidden scroll-auto bg-gray-50 selection:bg-orange-100 selection:text-orange-600`}>
-        <AppContainer>
-          <TRPCReactProvider>{children}</TRPCReactProvider>
-        </AppContainer>
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen overflow-x-hidden scroll-auto bg-background selection:bg-orange-100 selection:text-orange-600`}>
+        <ThemeProvider defaultTheme="system" disableTransitionOnChange attribute="class">
+          <AppContainer>
+            <TRPCReactProvider>{children}</TRPCReactProvider>
+          </AppContainer>
+        </ThemeProvider>
       </body>
     </html>
   );

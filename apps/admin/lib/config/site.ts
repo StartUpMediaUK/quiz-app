@@ -1,7 +1,7 @@
 export const siteConfig = {
-  name: "Quiz App",
-  url: "https://quiz.app",
-  description: "A interactive quiz application.",
+  name: "Quiz App Dashboard",
+  url: "https://admin.fearless.nerissagolden.com/",
+  description: "A dashboard for NG quiz application.",
   baseLinks: {
     home: "/",
     submissions: "/submissions",

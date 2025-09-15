@@ -16,32 +16,8 @@ const buttonVariants = tv({
   ],
   variants: {
     variant: {
-      primary: [
-        // border
-        "border-transparent",
-        // text color
-        "text-white dark:text-white",
-        // background color
-        "bg-blue-500 dark:bg-blue-500",
-        // hover color
-        "hover:bg-blue-600 dark:hover:bg-blue-600",
-        // disabled
-        "disabled:bg-blue-300 disabled:text-white",
-        "dark:disabled:bg-blue-800 dark:disabled:text-blue-400",
-      ],
-      secondary: [
-        // border
-        "border-gray-300 dark:border-gray-800",
-        // text color
-        "text-gray-900 dark:text-gray-50",
-        // background color
-        "bg-white dark:bg-gray-950",
-        //hover color
-        "hover:bg-gray-50 dark:hover:bg-gray-900/60",
-        // disabled
-        "disabled:text-gray-400",
-        "dark:disabled:text-gray-600",
-      ],
+      primary: "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 border-transparent",
+      secondary: "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
       light: [
         // base
         "shadow-none",

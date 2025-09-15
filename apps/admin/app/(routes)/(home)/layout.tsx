@@ -17,21 +17,19 @@ export default function Layout({
     setIsCollapsed(!isCollapsed)
   }
   return (
-    <div className="mx-auto max-w-screen-2xl">
+    <div className="mx-auto max-w-screen-2xl bg-background">
       <Sidebar isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} />
-      <div className={cn( isCollapsed ? "lg:pl-[60px]" : "lg:pl-64", "h-screen")}>
-        
-        <div className="px-6 lg:px-0 mt-5"><Breadcrumbs /></div>
+      <div className={cn(isCollapsed ? "lg:pl-[60px]" : "lg:pl-64", "h-screen")}>
+        <div className="px-6 lg:px-0 mt-5">
+          <Breadcrumbs />
+        </div>
         <main
           className={cn(
-            "ease transform-gpu transition-all duration-100 will-change-transform lg:bg-gray-50 lg:py-3 lg:pr-3 lg:dark:bg-gray-950",
-            "h-11/12 w-full lg:grid ease transform-gpu transition-all duration-100 will-change-transform bg-background",
-          )}
-        >
-          <div className="bg-white p-4 sm:p-6 lg:rounded-lg lg:border lg:border-gray-200 dark:bg-gray-925 lg:dark:border-gray-900">
-            <ScrollArea className="">
-              {children}
-            </ScrollArea>
+            "ease transform-gpu transition-all duration-100 will-change-transform",
+            "h-11/12 w-full lg:grid ease transform-gpu transition-all duration-100 will-change-transform bg-background"
+          )}>
+          <div className="p-4 sm:p-6 lg:rounded-lg lg:border lg:border-gray-200 lg:dark:border-gray-900">
+            <ScrollArea className="">{children}</ScrollArea>
           </div>
         </main>
         <div className="">
@@ -39,5 +37,5 @@ export default function Layout({
         </div>
       </div>
     </div>
-  )
+  );
 }

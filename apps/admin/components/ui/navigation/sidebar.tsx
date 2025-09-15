@@ -79,7 +79,7 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
                         <Link
                           href={item.href}
                           className={cn(
-                            isActive(item.href) ? "text-blue-600 dark:text-blue-500" : "text-gray-700 dark:text-gray-300",
+                            isActive(item.href) ? "text-primary" : "text-gray-700 dark:text-gray-300",
                             "inline-flex items-center rounded-md p-2 text-sm font-medium transition hover:bg-gray-200/50 hover:dark:bg-gray-900",
                             focusRing
                           )}>
@@ -96,7 +96,7 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
                       <Link
                         href={item.href}
                         className={cn(
-                          isActive(item.href) ? "text-blue-600 dark:text-blue-500" : "text-gray-700 dark:text-gray-300",
+                          isActive(item.href) ? "text-primary" : "text-gray-700 dark:text-gray-300",
                           "flex items-center gap-x-2.5 rounded-md p-2 text-sm font-medium transition-opacity hover:bg-gray-200/50 hover:dark:bg-gray-900",
                           focusRing
                         )}>

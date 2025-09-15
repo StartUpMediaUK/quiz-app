@@ -1,7 +1,7 @@
 export const siteConfig = {
-  name: "Quiz App",
-  url: "https://quiz.app",
-  description: "A interactive quiz application.",
+  name: "Live Fearless — Quiz App",
+  url: "https://fearless.nerissagolden.com/",
+  description: "A quiz application.",
   baseLinks: {
     home: "/",
     admin: {
@@ -11,6 +11,6 @@ export const siteConfig = {
       auth: {
         signIn: "/sign-in",
       },
-    }
+    },
   },
-}
+};
