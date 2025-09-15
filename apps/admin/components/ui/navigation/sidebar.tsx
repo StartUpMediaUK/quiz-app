@@ -138,16 +138,28 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
                       </Link>
                     </Tooltip>
                   ) : (
-                    <Link
-                      href={siteConfig.externalLinks.mainSite}
-                      className={cn(
-                        "text-gray-700 dark:text-gray-300",
-                        "flex items-center gap-x-2.5 rounded-md p-2 text-sm font-medium transition hover:bg-gray-200/50 hover:dark:bg-gray-900",
-                        focusRing
-                      )}>
-                      <Compass className="size-5 shrink-0" aria-hidden="true" />
-                      Go to main site
-                    </Link>
+                    <>
+                      <Link
+                        href={siteConfig.externalLinks.mainSite}
+                        className={cn(
+                          "text-gray-700 dark:text-gray-300",
+                          "flex items-center gap-x-2.5 rounded-md p-2 text-sm font-medium transition hover:bg-gray-200/50 hover:dark:bg-gray-900",
+                          focusRing
+                        )}>
+                        <Compass className="size-5 shrink-0" aria-hidden="true" />
+                        Go to main site
+                      </Link>
+                      <Link
+                        href={siteConfig.baseLinks.cms}
+                        className={cn(
+                          "text-gray-700 dark:text-gray-300",
+                          "flex items-center gap-x-2.5 rounded-md p-2 text-sm font-medium transition hover:bg-gray-200/50 hover:dark:bg-gray-900",
+                          focusRing
+                        )}>
+                        <Compass className="size-5 shrink-0" aria-hidden="true" />
+                        Go to CMS
+                      </Link>
+                    </>
                   )}
                 </li>
               </ul>

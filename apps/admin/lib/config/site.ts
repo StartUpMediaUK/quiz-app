@@ -7,6 +7,7 @@ export const siteConfig = {
     submissions: "/submissions",
     quizzes: "/quizzes",
     settings: "/settings",
+    cms: "/admin",
     auth: {
       signIn: "/sign-in",
     },
