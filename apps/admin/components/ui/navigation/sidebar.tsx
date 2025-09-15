@@ -121,7 +121,7 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
                   "block h-6 text-xs font-medium leading-6 text-gray-500 transition-opacity dark:text-gray-500",
                   isCollapsed ? "opacity-0" : "opacity-100"
                 )}>
-                Miscellaneous
+                Links
               </span>
               <ul role="list" className="mt-1 space-y-2">
                 <li>
