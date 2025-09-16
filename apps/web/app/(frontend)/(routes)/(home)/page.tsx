@@ -7,9 +7,8 @@ import Fearless3Stack from "@/public/images/live-fearless-3-stack.png";
 import FearlessBook from "@/public/images/live-fearless-book.png";
 
 const PAYLOAD_API_URL =
-  (process.env.NEXT_PUBLIC_PAYLOAD_PUBLIC_URL ?? process.env.NODE_ENV === "development")
-    ? "http://localhost:3001"
-    : "https://admin.fearless.nerissagolden.com";
+  process.env.NEXT_PUBLIC_PAYLOAD_PUBLIC_URL ??
+  (process.env.NODE_ENV === "development" ? "http://localhost:3001" : "https://admin.fearless.nerissagolden.com");
 
 async function getHomePageData() {
   try {
