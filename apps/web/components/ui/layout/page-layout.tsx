@@ -27,7 +27,7 @@ function Page({
   ) : (
     <main
       className={cn(
-        "relative mx-auto flex flex-col space-y-6",
+        "relative mx-auto flex flex-col",
         paddingTop && "pt-24",
         gradientBackground && "min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50",
         className
@@ -64,3 +64,4 @@ function PageActions({ className, ...props }: React.HTMLAttributes<HTMLDivElemen
 }
 
 export { Page, PageActions, PageHeader, PageHeaderDescription, PageHeaderHeading, PageLayout };
+

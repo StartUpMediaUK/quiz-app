@@ -38,14 +38,21 @@ export function Navbar() {
               <Link className="px-2 py-1 text-gray-900" href="#about">
                 About
               </Link>
+              <Link className="px-2 py-1 text-gray-900" href="#quiz">
+                Quiz
+              </Link>
             </div>
           </nav>
           <div className="flex items-center space-x-2">
             <Button className="hidden h-10 font-semibold sm:block bg-primary hover:bg-primary/90 text-primary-foreground" asChild>
-              <Link href={siteConfig.externalLinks.liveFearlessBook}>Buy the book</Link>
+              <Link target="_blank" href={siteConfig.externalLinks.liveFearlessBook}>
+                Buy the book
+              </Link>
             </Button>
             <Button variant="outline" className="hidden h-10 font-semibold sm:block" asChild>
-              <Link href="https://nerissagolden.com">Go to site</Link>
+              <Link target="_blank" href="https://nerissagolden.com">
+                Go to site
+              </Link>
             </Button>
           </div>
           <Button

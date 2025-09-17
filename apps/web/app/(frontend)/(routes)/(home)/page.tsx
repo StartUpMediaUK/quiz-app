@@ -1,10 +1,13 @@
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Page } from "@/components/ui/layout/page-layout";
+import { ArrowRight, BookOpen, CheckCircle } from "lucide-react";
+
+import { Badge } from "@/components/ui/badge";
+import { Home } from "@/lib/types/payload";
+import FearlessBook from "@/public/images/live-fearless-book.png";
 import Image from "next/image";
 import Link from "next/link";
-
-import Fearless3Stack from "@/public/images/live-fearless-3-stack.png";
-import FearlessBook from "@/public/images/live-fearless-book.png";
 
 const PAYLOAD_API_URL =
   process.env.NEXT_PUBLIC_PAYLOAD_PUBLIC_URL ??
@@ -27,101 +30,154 @@ async function getHomePageData() {
 }
 
 export default async function HomePage() {
-  const home = await getHomePageData();
+  const home: Home = await getHomePageData();
 
   if (!home) return <p>Homepage content not found</p>;
 
   return (
-    <Page>
-      <div className="z-0 absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/20 to-accent/15"></div>
+    <Page paddingTop={false}>
+      <section id="discover" className="relative bg-gradient-to-br from-background to-muted py-40">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <h1 className="text-4xl lg:text-6xl text-center lg:text-left font-bold text-foreground leading-tight text-balance">
+                  {home.heroTitle}
+                </h1>
+                <p className="text-xl text-muted-foreground leading-relaxed text-center lg:text-left text-pretty">{home.heroSubtitle}</p>
+              </div>
 
-      {/* Hero Section */}
-      <section id="discover" className="relative overflow-hidden">
-        <div className="relative container mx-auto px-4 py-20 lg:py-32">
-          <div className="grid gap-16 grid-cols-1 lg:grid-cols-2 items-center">
-            <div className="flex justify-center lg:justify-start relative">
-              <div className="relative z-10">
+              <div className="flex flex-col items-center justify-center lg:justify-start sm:flex-row gap-4">
+                <Button size="lg" asChild>
+                  <Link href={home?.primaryCTA?.link ?? ""}>
+                    {home?.primaryCTA?.text} <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
+                <Button variant="outline" size="lg" asChild>
+                  <Link target="_blank" href={home?.secondaryCTA?.link ?? ""}>
+                    {home?.secondaryCTA?.text} <BookOpen className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+
+            <div className="relative">
+              <div className="bg-card rounded-2xl p-8 shadow-xl">
                 <Image
                   width={400}
                   height={400}
-                  src={home.heroImageUrl || FearlessBook.src}
-                  alt="Hero Image"
-                  className="w-80 h-[480px] object-cover rounded-2xl shadow-2xl transform rotate-1 hover:rotate-0 transition-transform duration-500"
+                  src={home?.heroImage ?? FearlessBook.src}
+                  alt="Live Fearless book cover"
+                  className="w-full max-w-sm mx-auto rounded-lg"
                 />
               </div>
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/10 rounded-3xl blur-3xl scale-110"></div>
-            </div>
-
-            <div className="text-center lg:text-left space-y-8">
-              <h2 className="text-5xl lg:text-6xl font-serif font-bold text-foreground leading-tight">
-                {home.heroTitle} <span className="text-primary">{home.heroSubtitle}</span>
-              </h2>
-
-              <div className="space-y-6 text-lg leading-relaxed text-muted-foreground max-w-2xl whitespace-pre-line">
-                <p>{home.heroText}</p>
-              </div>
-
-              <div className="pt-4">
-                <Button asChild size="lg" className="text-lg px-10 py-6 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl">
-                  <Link href={home.ctaLink}>{home.ctaText}</Link>
-                </Button>
-              </div>
+              <Badge className="absolute -top-4 -right-4 bg-accent text-accent-foreground px-4 py-2 rounded-full font-semibold">
+                {home?.badgeText}
+              </Badge>
             </div>
           </div>
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="relative py-20 bg-gradient-to-r from-muted/30 to-secondary/10">
+      <section id="about" className="py-20 bg-background">
         <div className="container mx-auto px-4">
-          <div className="grid gap-12 lg:grid-cols-2 items-center">
-            <div className="space-y-6">
-              <h3 className="text-4xl font-serif font-bold text-foreground">{home.aboutTitle}</h3>
-              <div className="space-y-4 text-lg leading-relaxed text-muted-foreground whitespace-pre-line">
-                <p>{home.aboutText}</p>
+          <div className="text-center space-y-4 mb-16">
+            <h2 className="text-3xl lg:text-4xl font-bold text-foreground text-balance">{home?.featuresTitle}</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-pretty">{home?.featuresSubtitle}</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            {home?.features?.length &&
+              home.features.map((feature: any) => (
+                <Card key={feature?.id} className="bg-card border-border hover:shadow-lg transition-shadow">
+                  <CardContent className="p-6 text-center space-y-4">
+                    <h3 className="font-semibold text-card-foreground">{feature.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+          </div>
+
+          <div className="bg-muted rounded-2xl p-8 lg:p-12">
+            <div className="grid lg:grid-cols-2 gap-8 items-center">
+              <div className="space-y-6">
+                <h3 className="text-2xl font-bold text-foreground">{home?.discoverBlock?.discoverTitle}</h3>
+                <ul className="space-y-3 text-muted-foreground">
+                  {home?.discoverBlock?.items?.length &&
+                    home?.discoverBlock?.items?.length > 0 &&
+                    home?.discoverBlock.items.map((item: any) => (
+                      <li key={item?.id} className="flex items-start">
+                        <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                        {item.text}
+                      </li>
+                    ))}
+                </ul>
               </div>
-              <div className="pt-4">
-                <Button asChild size="lg" className="text-lg px-10 py-6 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl">
-                  <Link href={home?.aboutCTALink}>{home?.aboutCTAText}</Link>
-                </Button>
+              <div className="bg-background rounded-xl p-6 shadow-sm">
+                <blockquote className="text-lg italic text-foreground mb-4">"{home?.discoverBlock?.testimonial?.quote}"</blockquote>
+                <cite className="text-sm text-muted-foreground">— {home?.discoverBlock?.testimonial?.author}</cite>
               </div>
-            </div>
-            <div className="flex justify-center">
-              <Image
-                width={400}
-                height={400}
-                src={home.aboutImageUrl || Fearless3Stack.src}
-                alt="About Image"
-                className="w-80 h-96 object-cover rounded-2xl shadow-xl"
-              />
             </div>
           </div>
         </div>
       </section>
-
-      {/* Why Take Quiz Section */}
-      <section className="py-20 relative">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
-
-        <div className="container mx-auto px-4 text-center">
-          <div className="max-w-4xl mx-auto space-y-8">
-            <h3 className="text-4xl font-serif font-bold text-foreground">{home.whyTitle}</h3>
-            <p className="space-y-6 text-lg leading-relaxed text-muted-foreground whitespace-pre-line">{home.whyText}</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Discover Your Path Section */}
-      <section className="relative py-24 bg-gradient-to-br from-primary/5 via-secondary/10 to-accent/5">
-        <div className="container mx-auto px-4 text-center">
-          <div className="max-w-3xl mx-auto space-y-8">
-            <h3 className="text-5xl font-serif font-bold text-foreground">{home.discoverTitle}</h3>
-            <p className="text-xl leading-relaxed text-muted-foreground">{home.discoverText}</p>
-            <div className="pt-6">
-              <Button asChild size="lg" className="text-xl px-12 py-8 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl">
-                <Link href={home.discoverCTALink}>{home.discoverCTA}</Link>
-              </Button>
+      <section id="quiz" className="py-20 bg-muted">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center space-y-4 mb-12">
+              <h2 className="text-3xl lg:text-4xl font-bold text-foreground text-balance">{home?.quiz?.quizTitle}</h2>
+              <p className="text-xl text-muted-foreground text-pretty">{home?.quiz?.quizSubtitle}</p>
             </div>
+
+            <Card className="bg-background border-border shadow-xl">
+              <CardContent className="p-8 lg:p-12">
+                <div className="grid lg:grid-cols-2 gap-8 items-center">
+                  <div className="space-y-6">
+                    <h3 className="text-2xl font-bold text-foreground">{home?.quiz?.quizHeading}</h3>
+                    <p className="text-muted-foreground leading-relaxed">{home?.quiz?.quizDescription}</p>
+
+                    <ul className="space-y-3">
+                      {home?.quiz?.quizBenefits?.length &&
+                        home?.quiz?.quizBenefits?.length > 0 &&
+                        home?.quiz?.quizBenefits.map((benefit: any) => (
+                          <li key={benefit?.id} className="flex items-start">
+                            <CheckCircle className="h-5 w-5 text-primary mt-0.5 mr-3 flex-shrink-0" />
+                            <span className="text-muted-foreground">{benefit.text}</span>
+                          </li>
+                        ))}
+                    </ul>
+
+                    <div className="pt-4">
+                      <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground" asChild>
+                        <Link href={home?.quiz?.quizCTA?.link ?? ""}>
+                          {home?.quiz?.quizCTA?.text} <ArrowRight className="ml-2 h-5 w-5" />
+                        </Link>
+                      </Button>
+                      <p className="text-sm text-muted-foreground mt-2">{home?.quiz?.ctaNote}</p>
+                    </div>
+                  </div>
+
+                  <div className="relative">
+                    <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-8 text-center">
+                      <div className="text-6xl font-bold text-primary mb-2">{home?.quiz?.quizStats?.duration}</div>
+                      <div className="text-lg font-semibold text-foreground mb-1">Minutes</div>
+                      <div className="text-sm text-muted-foreground mb-6">to transform your perspective</div>
+
+                      <div className="grid grid-cols-2 gap-4 text-center">
+                        <div className="bg-background rounded-lg p-4">
+                          <div className="text-2xl font-bold text-primary">{home?.quiz?.quizStats?.questions}</div>
+                          <div className="text-xs text-muted-foreground">Questions</div>
+                        </div>
+                        <div className="bg-background rounded-lg p-4">
+                          <div className="text-2xl font-bold text-primary">{home?.quiz?.quizStats?.personalized}</div>
+                          <div className="text-xs text-muted-foreground">Personalized</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>

@@ -35,7 +35,7 @@ export default function StartQuiz() {
         <Button variant="outline" asChild>
           <Link href={`/`}>Back Home</Link>
         </Button>
-        <Button variant="primary" asChild>
+        <Button variant="default" asChild>
           <Link
             href={`/quiz/${quiz.slug}/${getFirstQuizQuestion(quiz)?.slug}`}
             onClick={() => reset()}
