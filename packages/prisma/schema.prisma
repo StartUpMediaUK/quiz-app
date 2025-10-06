@@ -120,7 +120,7 @@ model Activity {
 }
 
 type ActivityContext {
-  host String?
+  host      String?
   ipAddress String
   userAgent String
 }
@@ -163,7 +163,7 @@ model Quiz {
   deletedBy String?   @db.ObjectId
   deletedAt DateTime?
 
-  history QuizHistory[]
+  history  QuizHistory[]
   versions QuizVersion[]
 
   @@map("Quiz")
@@ -176,11 +176,11 @@ model QuizVersion {
   quizId String @db.ObjectId
   quiz   Quiz   @relation(fields: [quizId], references: [id])
 
-  version   Float
-  title     String
-  description String
+  version            Float
+  title              String
+  description        String
   questionCategories QuestionCategory[]
-  resultRanges ResultRange[]
+  resultRanges       ResultRange[]
 
   createdAt DateTime @default(now())
   createdBy String   @db.ObjectId
@@ -229,10 +229,10 @@ type ResultRange {
   objectGuid String
   slug       String
 
-  label      String
-  url      String
-  min Int
-  max Int
+  label String
+  url   String
+  min   Int
+  max   Int
 
   quizId String
 }
@@ -266,13 +266,13 @@ enum HistoryAction {
 model QuizSubmission {
   id         String @id @default(auto()) @map("_id") @db.ObjectId
   objectGuid String
-  
-  quizVersionId String @db.ObjectId
+
+  quizVersionId String      @db.ObjectId
   quizVersion   QuizVersion @relation(fields: [quizVersionId], references: [id])
 
-  user   ActivityContext?
-  answers  Answer[]
-  score    Int
+  user          ActivityContext?
+  answers       Answer[]
+  score         Int
   resultRangeId String
 
   createdAt DateTime @default(now())
@@ -280,6 +280,60 @@ model QuizSubmission {
 
 type Answer {
   questionId String
-  optionId String
-  points Int
+  optionId   String
+  points     Int
+}
+
+model CanvasPage {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  objectGuid String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name         String
+  pathName     String  @default("")
+  visits       Int     @default(0)
+  content      String?
+  order        Int
+  previewImage String?
+}
+
+model Notification {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  objectGuid String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  notification String
+  isRead       Boolean  @default(false)
+  readAt       DateTime?
+}
+
+model Contact {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  objectGuid String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name         String
+  email        String
+  phone        String?
+  message      String?
+}
+
+model Media {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  objectGuid String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  type         String?
+  name         String
+  link         String  @unique
+  accountId String
+
+  @@index([accountId])
 }

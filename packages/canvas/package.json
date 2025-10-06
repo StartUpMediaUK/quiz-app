@@ -1,0 +1,38 @@
+{
+  "name": "@workspace/canvas",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.2.1",
+    "@prisma/client": "latest",
+    "date-fns": "^4.1.0",
+    "lucide-react": "^0.544.0",
+    "react-hook-form": "^7.62.0",
+    "sonner": "^2.0.7",
+    "uuid": "^13.0.0",
+    "zod": "^4.1.11"
+  },
+  "peerDependencies": {
+    "next": "15.5.2",
+    "next-themes": "^0.4.6",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@turbo/gen": "^2.5.5",
+    "@types/node": "^20.19.9",
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19.1.7",
+    "@workspace/prisma": "workspace:*",
+    "@workspace/ui": "workspace:*",
+    "prisma": "latest",
+    "typescript": "^5.4.0"
+  },
+  "prisma": {
+    "schema": "../../packages/prisma/schema.prisma"
+  }
+}

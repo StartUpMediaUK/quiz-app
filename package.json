@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@prisma/client": "^6.15.0",
+    "@workspace/canvas": "workspace:*",
     "@workspace/prisma": "workspace:*",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
