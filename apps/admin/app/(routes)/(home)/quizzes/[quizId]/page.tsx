@@ -2,7 +2,7 @@ import { HydrateClient } from "@/trpc/server";
 import { QuizDetailClient } from "./_components/client";
 
 interface QuizPageProps {
-  params: { quizId: string }
+  params: Promise<{ quizId: string }>;
 }
 
 export default async function QuizPage({ params }: QuizPageProps) {

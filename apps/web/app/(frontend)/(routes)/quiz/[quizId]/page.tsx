@@ -1,11 +1,12 @@
 import { redirect } from "next/navigation";
 
 interface PageProps {
-  params: { quizId: string };
+  params: Promise<{ quizId: string }>;
 }
 
-const QuizPage = ({ params }: PageProps) => {
-  redirect(`/quiz/${params.quizId}/start`);
+const QuizPage = async ({ params }: PageProps) => {
+  const pageParams = await params;
+  redirect(`/quiz/${pageParams.quizId}/start`);
 };
 
 export default QuizPage;
